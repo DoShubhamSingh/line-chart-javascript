@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js
+"></script>
+    <style>
+        h1 {
+            display: flex;
+            justify-content: center;
+            color: rgb(255, 0, 179);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .chartbar {
+            width: 64%;
+            height: 60%;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 7px 8px 9px 9px rgb(234, 235, 236);
+            margin: 0 auto;
+            /* add this line */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1> Sales data</h1>
+    </header>
+    <div class="chartbar">
+        <canvas id="realTimeChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('realTimeChart').getContext('2d');
+        let chart;
+
+        // Initial data
+        const initialData = {
+            labels: [],
+            datasets: [{
+                label: 'Value',
+                data: [],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                fill: false,
+            }],
+        };
+
+        // Chart configuration
+        const chartConfig = {
+            type: 'line',
+            data: initialData,
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        ticks: {
+                            font: {
+                                size: 20,
+                                weight: 'bold',
+                            },
+                            color: '#2196f3', // Change the color of the X-axis labels
+                        },
+                        grid: {
+                            color: 'rgba(225,45,243,2)', // Change the color of the X-axis line
+                            borderColor: '#6gd66', // Change the color of the X-axis border
+                        },
+                        title: {
+                            display: true,
+                            text: 'Time',
+                        },
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                size: 22,
+                                weight: 'bold',
+                            },
+                            color: '#2196f3',
+                        },
+                        grid: {
+                            color: 'rgba(225,45,243,2)', // Change the color of the X-axis line
+                            borderColor: '#6gd66', // Change the color of the X-axis border
+                        },
+                        title: {
+                            display: true,
+                            text: 'Value',
+                        },
+                    },
+                },
+                animation: false,
+            },
+        };
+
+        // Initialize the chart
+        chart = new Chart(ctx, chartConfig);
+
+        // Function to add random data
+        function addData() {
+            const newData = Math.random() * 150; // Generate random data
+            chart.data.labels.push(chart.data.labels.length);
+            chart.data.datasets[0].data.push(newData);
+            chart.update(); // Update the chart
+        }
+
+        // Add data at regular intervals (e.g., every 1 second)
+        setInterval(addData, 1000);
+    </script>
+</body>
+
+</html>
